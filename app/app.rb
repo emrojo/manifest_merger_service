@@ -1,6 +1,10 @@
 require 'sinatra'
 require File.expand_path(File.dirname(__FILE__) +'/../lib/excel_merge')
 
+post '/csv_to_spreadsheet' do
+  ExcelBuilder.new(params['csv']).serialize
+end
+
 post '/merge_excel/' do
   xls_template = params['template'][:tempfile]
   samples_csv  = params['manifest-details'][:tempfile]
