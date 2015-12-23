@@ -26,18 +26,21 @@ class ExcelBuilder
     @label_definitions = label_definitions
 
   @p = Axlsx::Package.new
-    @p.workbook.add_worksheet(:name => "-- NOT EDIT -- Configuration") do |sheet|
-      @config_sheet = ExcelManifest::ConfigurationWorksheet.new(@label_definitions)
-      @config_sheet.write_values_list(sheet)
+    @p.workbook.add_worksheet(:name => "-- NOT EDIT -- Configuration", :state => :hidden) do |sheet|
+      @config_sheet = ExcelManifest::ConfigurationWorksheet.new(sheet, @label_definitions)
+      @config_sheet.write_data_validation_configuration
+      @config_sheet.lock_worksheet_with_password('fish')
+
       #@config_sheet.each_line do |line|
       #  @config_sheet.add_row line
       #end
       #config_sheet.add_row @label_definitions.conditional_formatting_lists
     end
-    @p.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|
-      @data_sheet = ExcelManifest::DataWorksheet.new(@label_definitions)
-      @data_sheet.write_headers(sheet)
-      @data_sheet.write_data_validations(sheet)
+    @p.workbook.add_worksheet(:name => "Sample Registration") do |sheet|
+      @data_sheet = ExcelManifest::DataWorksheet.new(sheet, @label_definitions)
+      @data_sheet.write_headers
+      #@data_sheet.write_conditional_formatting
+      @data_sheet.write_data_validations
 
 
       #conditional_formattings(column_headers).each do |range,opts|
@@ -65,4 +68,8 @@ class ExcelBuilder
     @p.serialize('simple.xlsx')
   end
 end
-ExcelBuilder.new(LabelDefinitions.new).serialize
+require 'benchmark'
+
+puts Benchmark.measure {ExcelBuilder.new(LabelDefinitions.new).serialize}
+
+

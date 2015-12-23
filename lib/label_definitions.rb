@@ -6,7 +6,6 @@ class LabelDefinitions
 
 def initialize
   @definitions =   [{
-    :type => :list,
     :data_validation => {
       :type => :list,
 
@@ -27,7 +26,11 @@ def initialize
      :labels => ['DNA SOURCE']
   },
     {
-    :type => :string,
+     :data_validation => {
+       :valid_values => ["Prueba1", "Prueba2", "Prueba3", "prueba4"],
+      :type => :list,
+
+     },
     :labels => %Q{Tube Barcode
 Sanger Barcode
 SANGER SAMPLE ID
@@ -76,4 +79,9 @@ end
       yield l
     end
   end
+
+  def definitions_with_data_validation(&block)
+    label_definitions.select{|l| l[:data_validation][:type] == :list}
+  end
+
 end
