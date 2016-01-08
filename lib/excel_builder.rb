@@ -39,7 +39,7 @@ class ExcelBuilder
     @p.workbook.add_worksheet(:name => "Sample Registration") do |sheet|
       @data_sheet = ExcelManifest::DataWorksheet.new(sheet, @label_definitions)
       @data_sheet.write_headers
-      #@data_sheet.write_conditional_formatting
+      @data_sheet.write_conditional_formatting(@config_sheet)
       @data_sheet.write_data_validations
 
 

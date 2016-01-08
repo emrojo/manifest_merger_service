@@ -30,7 +30,7 @@ class ExcelManifest::ConfigurationWorksheet
   end
 
   def write_data_validation_configuration
-    idx_column_pos = @column_pos
+    idx_column_pos = @column_pos-1
     @label_definitions.definitions_with_data_validation.map do |label_definition|
       update_label_definition(label_definition, idx_column_pos)
       idx_column_pos += 1
@@ -39,6 +39,7 @@ class ExcelManifest::ConfigurationWorksheet
       update_sheet_with_table(@sheet, transpose_table(table), @row_pos, @column_pos)
     end
   end
+
 
   def lock_worksheet_with_password(password)
     @sheet.sheet_protection.password = 'fish'

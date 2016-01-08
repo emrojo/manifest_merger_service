@@ -17,6 +17,10 @@ module ExcelManifest
     "#{column_name}#{start+1}:#{column_name}#{size+start+1}"
   end
 
+  def column_selection_to_str_selection(column_name, start, size)
+    "$#{column_name}#{start+1}:$#{column_name}#{size+start+1}"
+  end
+
   def update_table_with_table(tableA, tableB, startARow, startACol)
     tableB.each_with_index do |row, idx|
       tableA[startARow + idx] = tableA[startARow + idx].slice(0, startACol).concat(row)
