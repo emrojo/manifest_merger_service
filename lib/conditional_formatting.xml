@@ -1,0 +1,111 @@
+<conditionalFormatting sqref="B7">
+  <cfRule type="expression" dxfId="29" priority="1" stopIfTrue="1">
+    <formula>AND(ISBLANK(B7),COUNTA($D7:$BC7)&gt;0)</formula>
+  </cfRule>
+  <cfRule type="expression" dxfId="28" priority="2" stopIfTrue="1">
+    <formula>OR(LEN(B7)&gt;20,NOT(ISERROR(FIND("&amp;",B7))),NOT(ISERROR(FIND("(",B7))),NOT(ISERROR(FIND(")",B7))),NOT(ISERROR(FIND(" ",B7))),NOT(ISERROR(FIND("+",B7))),NOT(ISERROR(FIND("*",B7))),NOT(ISERROR(FIND("-",B7))))</formula>
+  <cfRule type="expression" dxfId="27" priority="3" stopIfTrue="1">
+    <formula>OR(NOT(ISERROR(FIND(".",B7))),NOT(ISERROR(FIND(",",B7))),NOT(ISERROR(FIND("\",B7))),NOT(ISERROR(FIND("/",B7))))</formula>
+  </cfRule>
+</conditionalFormatting>
+<conditionalFormatting sqref="U10:W9999">
+  <cfRule type="expression" dxfId="26" priority="26" stopIfTrue="1">
+    <formula>OR(LEN(U10)&gt;15,NOT(ISERROR(FIND("&amp;",U10))),NOT(ISERROR(FIND("(",U10))),NOT(ISERROR(FIND(")",U10))),NOT(ISERROR(FIND(" ",U10))),NOT(ISERROR(FIND("+",U10))),NOT(ISERROR(FIND("*",U10))),NOT(ISERROR(FIND("-",U10))))</formula>
+  <cfRule type="expression" dxfId="25" priority="27" stopIfTrue="1">
+    <formula>OR(NOT(ISERROR(FIND(".",U10))),NOT(ISERROR(FIND(",",U10))),NOT(ISERROR(FIND("\",U10))),NOT(ISERROR(FIND("/",U10))))</formula>
+  </cfRule>
+</conditionalFormatting>
+<conditionalFormatting sqref="L10:M9999">
+  <cfRule type="expression" dxfId="24" priority="4" stopIfTrue="1">
+    <formula>AND(ISBLANK(L10),COUNTA($C10:$BB10)&gt;0)</formula>
+  </cfRule>
+  <cfRule type="expression" dxfId="23" priority="5" stopIfTrue="1">
+    <formula>OR(AND(NOT(ISBLANK(L10)),NOT(LEN(L10)=5),NOT(ISERROR(FIND("/",L10)))),AND(NOT(ISBLANK(L10)),NOT(LEN(L10)=4),(ISERROR(FIND("/",L10)))),NOT(ISERROR(FIND(" ",L10))))</formula>
+  </cfRule>
+</conditionalFormatting>
+  <cfRule type="expression" dxfId="21" priority="7" stopIfTrue="1">
+    <formula>AND(NOT(ISNUMBER(E10)),NOT(ISBLANK(E10)))</formula>
+  </cfRule>
+</conditionalFormatting>
+<conditionalFormatting sqref="H10:J9999">
+  <cfRule type="expression" dxfId="20" priority="18" stopIfTrue="1">
+    <formula>AND(ISBLANK(H10),COUNTA($C10:$BB10)&gt;0)</formula>
+  </cfRule>
+  <cfRule type="expression" dxfId="19" priority="19" stopIfTrue="1">
+    <formula>OR(LEN(H10)&gt;30,NOT(ISERROR(FIND("&amp;",H10))),NOT(ISERROR(FIND("(",H10))),NOT(ISERROR(FIND(")",H10))),NOT(ISERROR(FIND("$",H10))),NOT(ISERROR(FIND("*",H10))),NOT(ISERROR(FIND("-",H10))))</formula>
+  </cfRule>
+  <cfRule type="expression" dxfId="18" priority="20" stopIfTrue="1">
+    <formula>OR(NOT(ISERROR(FIND(".",H10))),NOT(ISERROR(FIND(",",H10))),NOT(ISERROR(FIND("\",H10))),NOT(ISERROR(FIND("/",H10))))</formula>
+  </cfRule>
+</conditionalFormatting>
+<conditionalFormatting sqref="D10:D9999">
+    <cfRule type="expression" dxfId="17" priority="23" stopIfTrue="1">
+      <formula>AND(ISBLANK(D10),COUNTA($C10:$BB10)&gt;0)</formula>
+    </cfRule>
+    <cfRule type="expression" dxfId="16" priority="24" stopIfTrue="1">
+      <formula>OR(LEN(D10)&gt;7,NOT(ISERROR(FIND("&amp;",D10))),NOT(ISERROR(FIND("(",D10))),NOT(ISERROR(FIND(")",D10))),NOT(ISERROR(FIND(" ",D10))),NOT(ISERROR(FIND("+",D10))),NOT(ISERROR(FIND("*",D10))),NOT(ISERRO    <cfRule type="expression" dxfId="16" priority="24" stopIfTrue="1">
+      <formula>OR(LEN(D10)&gt;7,NOT(ISERROR(FIND("&amp;",D10))),NOT(ISERROR(FIND("(",D10))),NOT(ISERROR(FIND(")",D10))),NOT(ISERROR(FIND(" ",D10))),NOT(ISERROR(FIND("+",D10))),NOT(ISERROR(FIND("*",D10))),NOT(ISERROR(FIND("-",D10))))</formula>
+    </cfRule>
+    <cfRule type="expression" dxfId="15" priority="25" stopIfTrue="1">
+      <formula>OR(NOT(ISERROR(FIND(".",D10))),NOT(ISERROR(FIND(",",D10))),NOT(ISERROR(FIND("\",D10))),NOT(ISERROR(FIND("/",D10))))</formula>
+    </cfRule>
+  </conditionalFormatting>
+  <conditionalFormatting sqref="C10:C9999">
+    <cfRule type="expression" dxfId="14" priority="28" stopIfTrue="1">
+      <formula>AND(ISBLANK(C10),COUNTA($C10:$BB10)&gt;0)</formula>
+    </cfRule>
+    <cfRule type="expression" dxfId="13" priority="29" stopIfTrue="1">
+      <formula>OR(LEN(C10)&gt;20,NOT(ISERROR(FIND("&amp;",C10))),NOT(ISERROR(FIND("(",C10))),NOT(ISERROR(FIND(")",C10))),NOT(ISERROR(FIND(" ",C10))),NOT(ISERROR(FIND("+",C10))),NOT(ISERROR(FIND("*",C10))),NOT(ISERROR(FIND("-",C10))))</formula>
+    </cfRule>
+    <cfRule type="expression" dxfId="12" priority="30" stopIfTrue="1">
+      <formula>OR(NOT(ISERROR(FIND(".",C10))),NOT(ISERROR(FIND(",",C10))),NOT(ISERROR(FIND("\",C10))),NOT(ISERROR(FIND("/",C10))))</formula>
+    </cfRule>
+  </conditionalFormatting>
+  <conditionalFormatting sqref="Q10:Q9999 N10:O9999">
+    <cfRule type="expression" dxfId="11" priority="35" stopIfTrue="1">
+      <formula>AND(ISBLANK(N10),COUNTA($C10:$BB10)&gt;0)</formula>
+    </cfRule>
+    <cfRule type="expression" dxfId="10" priority="36" stopIfTrue="1">
+      <formula>AND(NOT(ISBLANK(N10)),NOT(UPPER(N10)=$BR$4),NOT(UPPER(N10)=$BR$5))</formula>
+    </cfRule>
+  </conditionalFormatting>
+  <conditionalFormatting sqref="K10:K9999">
+    <cfRule type="expression" dxfId="9" priority="39" stopIfTrue="1">
+      <formula>AND(ISBLANK(K10),COUNTA($C10:$BB10)&gt;0)</formula>
+    </cfRule>
+    <cfRule type="expression" dxfId="8" priority="40" stopIfTrue="1">
+      <formula>AND(NOT(ISBLANK(K10)),NOT(OR(EXACT(UPPER(K10),$BQ$4:$BQ$9))))</formula>
+    </cfRule>
+  </conditionalFormatting>
+  <conditionalFormatting sqref="S10:S9999">
+    <cfRule type="expression" dxfId="7" priority="41" stopIfTrue="1">
+      <formula>AND(ISBLANK(S10),COUNTA($C10:$BB10)&gt;0)</formula>
+    </cfRule>
+    <cfRule type="expression" dxfId="6" priority="42" stopIfTrue="1">
+      <formula>AND(NOT(ISBLANK(S10)),NOT(OR(EXACT(UPPER(S10),$BN$4:$BN$7))))</formula>
+    </cfRule>
+  </conditionalFormatting>
+    <conditionalFormatting sqref="T10:T9999">
+    <cfRule type="expression" dxfId="5" priority="43" stopIfTrue="1">
+      <formula>AND(ISBLANK(T10),COUNTA($C10:$BB10)&gt;0)</formula>
+    </cfRule>
+    <cfRule type="expression" dxfId="4" priority="44" stopIfTrue="1">
+      <formula>AND(NOT(ISBLANK(T10)),NOT(OR(EXACT(UPPER(T10),$BO$4:$BO$6))))</formula>
+    </cfRule>
+  </conditionalFormatting>
+  <conditionalFormatting sqref="R10:R9999">
+    <cfRule type="expression" dxfId="3" priority="45" stopIfTrue="1">
+      <formula>AND(ISBLANK(R10),COUNTA($C10:$BB10)&gt;0)</formula>
+    </cfRule>
+    <cfRule type="expression" dxfId="2" priority="46" stopIfTrue="1">
+      <formula>AND(NOT(ISBLANK(R10)),NOT(OR(EXACT(UPPER(R10),$BU$4:$BU$8))))</formula>
+    </cfRule>
+  </conditionalFormatting>
+  <conditionalFormatting sqref="G10:G9999">
+    <cfRule type="expression" dxfId="1" priority="47" stopIfTrue="1">
+      <formula>AND(ISBLANK(G10),COUNTA($C10:$BB10)&gt;0)</formula>
+    </cfRule>
+    <cfRule type="expression" dxfId="0" priority="48" stopIfTrue="1">
+      <formula>AND(NOT(ISBLANK(G10)),NOT(OR(UPPER(G10)=$BK$3:$BK$8)))</formula>
+    </cfRule>
+  </conditionalFormatting>

@@ -1,3 +1,70 @@
+class DataWorksheet < Worksheet
+  DEFAULT_ROW_POS = 2
+  DEFAULT_COLUMN_POS = 3
+  DATA_ROW_SIZE = 99
+
+  def initialize(package, name, headers)
+    @column_pos = DEFAULT_COLUMN_POS
+    @row_pos = DEFAULT_ROW_POS
+
+    @INDEX = @column_pos
+
+    super(package, name, headers)
+
+    package.workbook.add_worksheet(:name => "Sample Registration") do |sheet|
+      @sheet = sheet
+      write_headers
+      write_conditional_formatting(@config_sheet)
+      #write_data_validations
+    end
+  end
+
+  def write_data_validations
+    @label_definitions.column_headers.each do |field|
+      validation_options = @label_definitions.data_validation_options(field)
+      data_row_range.each do |pos|
+        @sheet.add_data_validation("#{field_column_name(field)}#{pos+@row_pos}", validation_options) unless validation_options.nil?
+      end
+      #sheet.add_data_validation(field_column_range(field), validation_options) unless validation_options.nil?
+    end
+  end
+
+  def write_headers
+    update_sheet_with_table(@sheet,[@headers.map(&:name).map(&:name)], @row_pos, @column_pos)
+    #fill_sheet_with_empty_rows_until_row_pos(@sheet, @row_pos)
+    #@sheet.add_row @label_definitions.column_headers
+  end
+
+  def write_conditional_formatting(config_sheet)
+    styles_created = Style.all.map{|s| WorkbookStyle.new(@sheet.workbook, s)}
+
+    @headers.map(&:conditional_formattings).each do |cf_list|
+      cf_list.each do |cf|
+        Axlsx::ConditionalFormattingRule.new(:type => :expression,
+                                                      :priority => 1,
+                                                      :dxfId => styles_created.select{|s| s[:name] == cf[:style]}.first.style_id,
+                                                      :formula => cf.formula)
+
+        @sheet.add_conditional_formatting(field_column_range(label_name), [cfr])
+      end
+    end
+    # @label_definitions.conditional_formattings.each do |cf|
+    #   cf[:labels].each do |label_name|
+    #     formula = @label_definitions.rules.select{|r| r[:name] == cf[:rule]}.first[:formula]
+    #     created_formula = CellContext.new(self, config_sheet, label_name).create_formula(formula)
+    #     cfr = Axlsx::ConditionalFormattingRule.new( { :type => :expression,
+    #                                                   :priority => 1,
+    #                                                   :dxfId => styles_created.select{|s| s[:name] == cf[:style]}.first.style_id,
+    #                                                   :formula => created_formula })
+    #     @sheet.add_conditional_formatting(field_column_range(label_name), [cfr])
+    #   end
+    # end
+
+  end
+
+end
+
+
 class ExcelManifest::DataWorksheet
 
   DEFAULT_ROW_POS = 2
@@ -81,24 +148,6 @@ class ExcelManifest::DataWorksheet
       end
     end
 
-    #profitable = @sheet.workbook.styles.add_style( :fg_color => "428751", :type => :dxf )
-
-    #cfr = Axlsx::ConditionalFormattingRule.new( { :type => :expression,
-    #                                              :dxfId => profitable,
-    #                                                  :priority => 1,
-    #                                                  :formula => 'AND(ISBLANK(H10),COUNTA($C10:$BB10)>0)'
-    #                                                  })
-
-
-
-    #:formula => '=AND(ISBLANK(H10),COUNTA($C10:$BB10)>0)'
-    #@sheet.add_conditional_formatting("B3:B100", [cfr])
-
-
-
-    #profitable = @sheet.workbook.styles.add_style( :fg_color => "428751", :type => :dxf )
-    #color_scale = Axlsx::ColorScale.new
-    #@sheet.add_conditional_formatting("B3:B100", { :type => :colorScale, :operator => :greaterThan, :formula => "100000", :dxfId => profitable, :priority => 1, :color_scale => color_scale })
   end
 
   def data_row_range

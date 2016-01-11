@@ -1,3 +1,54 @@
+
+
+class ConfigurationWorksheet < Worksheet
+  DEFAULT_COLUMN_POS = 4
+  DEFAULT_ROW_POS = 5
+
+
+  attr_accessor :column_pos
+  attr_accessor :row_pos
+
+  def initialize(package, name, headers)
+    @column_pos = DEFAULT_COLUMN_POS
+    @row_pos = DEFAULT_ROW_POS
+    @INDEX = @column_pos
+
+    super(package, name, headers)
+
+    @package.workbook.add_worksheet(:name => @name, :state => :hidden) do |sheet|
+      @sheet = sheet
+      write_data_validation_configuration
+      lock_worksheet_with_password('fish')
+    end
+  end
+
+  def data_validation_formula(header)
+    "'#{@sheet_name}'!#{data_validation_list_column_range(formula_position, valid_values)}"
+  end
+
+  def data_validations
+    @headers.map(&:data_validation)
+      dv.formula_position = idx + @column_pos
+      dv.formula1 = data_validation_formula(header)
+      DataValidation.find(:all).select{|dv| (dv.labels * @labels).length > 0 }.map do |dv|
+
+    end
+  end
+
+  def write_data_validation_configuration
+    update_sheet_with_table(@sheet, transpose_table(@headers.map(&:data_validation).map(&:valid_values)), @row_pos, @column_pos)
+
+    # idx_column_pos = @column_pos-1
+    # @label_definitions.definitions_with_data_validation.map do |label_definition|
+    #   update_label_definition(label_definition, idx_column_pos)
+    #   idx_column_pos += 1
+    #   label_definition[:data_validation][:valid_values]
+    # end.tap do |table|
+    #   update_sheet_with_table(@sheet, transpose_table(table), @row_pos, @column_pos)
+    # end
+  end
+end
+
 class ExcelManifest::ConfigurationWorksheet
 
   include ExcelManifest
@@ -29,16 +80,6 @@ class ExcelManifest::ConfigurationWorksheet
     label_definition[:data_validation][:prompt] = data_validation_prompt_msg(label_definition)
   end
 
-  def write_data_validation_configuration
-    idx_column_pos = @column_pos-1
-    @label_definitions.definitions_with_data_validation.map do |label_definition|
-      update_label_definition(label_definition, idx_column_pos)
-      idx_column_pos += 1
-      label_definition[:data_validation][:valid_values]
-    end.tap do |table|
-      update_sheet_with_table(@sheet, transpose_table(table), @row_pos, @column_pos)
-    end
-  end
 
 
   def lock_worksheet_with_password(password)

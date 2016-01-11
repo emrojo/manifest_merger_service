@@ -7,39 +7,39 @@ class LabelDefinitions
   def rules
     [
       {
-        :name => :incorrect_format,
+        :key => :incorrect_format,
         :formula => %q{OR(LEN(#{my_cell})>15,NOT(ISERROR(FIND("&amp;",#{my_cell}))),NOT(ISERROR(FIND("(",#{my_cell}))),NOT(ISERROR(FIND(")",#{my_cell}))),NOT(ISERROR(FIND(" ",#{my_cell}))),NOT(ISERROR(FIND("+",#{my_cell}))),NOT(ISERROR(FIND("*",#{my_cell}))),NOT(ISERROR(FIND("-",#{my_cell}))))}
       },
       {
-        :name => :incorrect_content,
+        :key => :incorrect_content,
         :formula => %q{OR(NOT(ISERROR(FIND(".",#{my_cell}))),NOT(ISERROR(FIND(",",#{my_cell}))),NOT(ISERROR(FIND("\\",#{my_cell}))),NOT(ISERROR(FIND("\/",#{my_cell}))))}
       },
       {
-        :name => :empty_entry,
+        :key => :empty_entry,
         :formula => %q{AND(ISBLANK(#{my_cell}),COUNTA(#{range_of_entry})&gt;0)}
       },
       {
-        :name => :date_validation,
+        :key => :date_validation,
         :formula => %q{OR(AND(NOT(ISBLANK(#{my_cell})),NOT(LEN(#{my_cell})=5),NOT(ISERROR(FIND("/",#{my_cell})))),AND(NOT(ISBLANK(#{my_cell})),NOT(LEN(#{my_cell})=4),(ISERROR(FIND("/",#{my_cell})))),NOT(ISERROR(FIND(" ",#{my_cell}))))}
       },
       {
-        :name => :number_validation,
+        :key => :number_validation,
         :formula => %q{AND(NOT(ISNUMBER(#{my_cell})),NOT(ISBLANK(#{my_cell})))}
       },
       {
-        :name => :string_validation_30,
+        :key => :string_validation_30,
         :formula => %q{OR(LEN(#{my_cell})&gt;30,NOT(ISERROR(FIND("&amp;",#{my_cell}))),NOT(ISERROR(FIND("(",#{my_cell}))),NOT(ISERROR(FIND(")",#{my_cell}))),NOT(ISERROR(FIND("$",#{my_cell}))),NOT(ISERROR(FIND("*",#{my_cell}))),NOT(ISERROR(FIND("-",#{my_cell}))))"}
       },
       {
-        :name => :string_validation_7,
+        :key => :string_validation_7,
         :formula => %q{OR(LEN(#{my_cell})&gt;7,NOT(ISERROR(FIND("&amp;",#{my_cell}))),NOT(ISERROR(FIND("(",#{my_cell}))),NOT(ISERROR(FIND(")",#{my_cell}))),NOT(ISERROR(FIND(" ",#{my_cell}))),NOT(ISERROR(FIND("+",#{my_cell}))),NOT(ISERROR(FIND("*",#{my_cell}))),NOT(ISERROR(FIND("-",#{my_cell}))))}
       },
       {
-        :name => :range_validation,
+        :key => :range_validation,
         :formula => %q{AND(NOT(ISBLANK(#{my_cell})), #{range_of_validation.map{|cell| 'NOT(UPPER(#{my_cell})=#{cell})'}.join(',')}}
       },
       {
-        :name => :range_validation_but_better,
+        :key => :range_validation_but_better,
         :formula => %q{AND(NOT(ISBLANK(#{my_cell})),NOT(OR(EXACT(UPPER(#{my_cell}),#{range_of_validation}))))}
       }
     ]
@@ -48,56 +48,84 @@ class LabelDefinitions
   def styles
     [
       {
-        :name => :incomplete_entry,
-        :fg_color => "428751",
-        :type => :dxf
+        :key => :red_when_incomplete_entry,
+        :rule_key => :incomplete_entry,
+        :style_definition => { :fg_color => "428751", :type => :dxf}
       },
       {
-        :name => :incorrect_entry,
-        :fg_color => "428751", :type => :dxf
+        :key => :red_when_incorrect_entry,
+        :rule_key => :incorrect_entry,
+        :style_definition => { :fg_color => "428751", :type => :dxf }
       }
     ]
   end
 
   def conditional_formattings
     [{
-      :rule => :number_validation,
-      :style => :incorrect_entry,
+      :style_key => :red_when_incomplete_entry,
       :labels => ["Lysed?", "HMDMC"]
-      }]
+    }]
   end
 
-def initialize
-  @definitions =   [{
-    :data_validation => {
-      :type => :list,
+  def manifest_templates
+    [{
+      :name => 'full_tube_manifest',
+      :headers =>  %Q{Tube Barcode
+Sanger Barcode
+SANGER SAMPLE ID
+HMDMC
+DNA SOURCE
+SUPPLIER SAMPLE NAME
+Donor ID
+DATE OF SAMPLE COLLECTION (yyyy-mm-dd only)
+SAMPLE TYPE
+Lysed?
+VOLUME (ul)
+GENDER
+IS SAMPLE A CONTROL?
+IS RE-SUBMITTED SAMPLE?
+STORAGE CONDITIONS
+MOTHER (optional)
+FATHER (optional)
+SIBLING (optional)
+GC CONTENT
+PUBLIC NAME
+TAXON ID
+SCIENTIFIC NAME
+SAMPLE ACCESSION NUMBER (optional)}.split("\n")
+    },{
+      :name => 'half_tube_manifest',
+      :headers => %Q{Tube Barcode
+Sanger Barcode
+SANGER SAMPLE ID
+HMDMC
+DNA SOURCE}.split("\n")
+    }]
+  end
 
-      :valid_values => ["Test1", "Test2", "Test3"],
-      #:formula1 => 'C1:C8',
-      #:error => 'Only values from C1:C8',
-      #:prompt => 'Only values from C1:C8'
+  def headers(manifest_template_name)
+    manifest_templates.select{|t| t[:name] == manifest_template_name}.first[:headers]
+  end
 
-      :showDropDown => false,
-      :showErrorMessage => true,
-      :errorTitle => '',
+  def data_validations
+    [
+      {
+        :type => :list,
+        :valid_values => ["Test1", "Test2", "Test3"],
 
-      :errorStyle => :stop,
-      :showInputMessage => true,
-      :promptTitle => '',
+        :showDropDown => false,
+        :showErrorMessage => true,
+        :errorTitle => '',
 
+        :errorStyle => :stop,
+        :showInputMessage => true,
+        :promptTitle => '',
+        :labels => ['DNA SOURCE']
       },
-    :conditional_formatting => {
-
-    },
-    :labels => ['DNA SOURCE']
-  },
-    {
-     :data_validation => {
-       :valid_values => ["1234", "Prueba2", "Prueba3", "prueba4"],
-      :type => :list,
-
-     },
-    :labels => %Q{Tube Barcode
+      {
+        :valid_values => ["1234", "Prueba2", "Prueba3", "prueba4"],
+        :type => :list,
+        :labels => %Q{Tube Barcode
 Sanger Barcode
 SANGER SAMPLE ID
 HMDMC
@@ -119,10 +147,9 @@ PUBLIC NAME
 TAXON ID
 SCIENTIFIC NAME
 SAMPLE ACCESSION NUMBER (optional)}.split("\n")
-  }
-  ]
-
-end
+        }
+    ]
+  end
 
 def label_definitions
   @definitions
